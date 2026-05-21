@@ -1,0 +1,6 @@
+packages/
+*.nupkg
+.vs/
+bin/
+obj/
+*.exe
