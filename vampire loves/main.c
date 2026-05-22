@@ -13,9 +13,6 @@
 #include <stdlib.h>
 #include <time.h>
 
-// =========================================
-// ESTRUTURAS
-// =========================================
 
 typedef struct {
 
@@ -40,21 +37,16 @@ typedef struct {
 typedef struct {
 
     char nome[50];
-
     int pontos;
 
 } Ranking;
 
-// =========================================
-// ORDENAÇÃO
-// =========================================
+// Ordenação do ranking
 
 void ordenarRanking(Ranking ranking[], int tamanho) {
 
     for (int i = 0; i < tamanho - 1; i++) {
-
         for (int j = 0; j < tamanho - 1 - i; j++) {
-
             if (ranking[j].pontos <
                 ranking[j + 1].pontos) {
 
@@ -71,52 +63,32 @@ void ordenarRanking(Ranking ranking[], int tamanho) {
     }
 }
 
-// =========================================
-// MAIN
-// =========================================
-
 int main() {
 
-    // =========================================
-    // NOME DO JOGADOR
-    // =========================================
+    // Nome do jogador
 
     char nomeJogador[50];
 
     printf("Digite o nome do jogador: ");
-
     scanf("%49s", nomeJogador);
 
-    // =========================================
-    // INICIALIZAÇÕES
-    // =========================================
+    // Inicialização
 
     al_init();
 
     al_init_font_addon();
-
     al_init_ttf_addon();
-
     al_init_image_addon();
-
     al_init_primitives_addon();
-
     al_install_keyboard();
-
     srand(time(NULL));
-
-    // =========================================
-    // DISPLAY
-    // =========================================
 
     ALLEGRO_DISPLAY* display =
         al_create_display(1280, 720);
 
     al_set_window_title(display, "Vampire Loves");
 
-    // =========================================
-    // FONTES
-    // =========================================
+    // Adicionar fontes
 
     ALLEGRO_FONT* font =
         al_load_font("./font.ttf", 18, 0);
@@ -124,48 +96,34 @@ int main() {
     ALLEGRO_FONT* fontGrande =
         al_load_font("./font.ttf", 40, 0);
 
-    // =========================================
-    // TIMER
-    // =========================================
+    // Timer
 
     ALLEGRO_TIMER* timer =
         al_create_timer(1.0 / 30.0);
 
-    // =========================================
-    // IMAGENS
-    // =========================================
+    // Imagens
 
     ALLEGRO_BITMAP* sprite =
         al_load_bitmap("./personagem.png");
-
     ALLEGRO_BITMAP* bg =
         al_load_bitmap("./fundo.png");
-
     ALLEGRO_BITMAP* inimigoSprite =
         al_load_bitmap("./inimigo.png");
-
     ALLEGRO_BITMAP* itemSprite =
         al_load_bitmap("./item.png");
 
-    // =========================================
-    // VERIFICAÇÃO
-    // =========================================
+	// Verificação de erros
 
     if (!sprite)
         printf("Erro personagem.png\n");
-
     if (!bg)
         printf("Erro fundo.png\n");
-
     if (!inimigoSprite)
         printf("Erro inimigo.png\n");
-
     if (!itemSprite)
         printf("Erro item.png\n");
 
-    // =========================================
-    // EVENTOS
-    // =========================================
+    // Eventos
 
     ALLEGRO_EVENT_QUEUE* event_queue =
         al_create_event_queue();
@@ -187,49 +145,31 @@ int main() {
 
     al_start_timer(timer);
 
-    // =========================================
-    // PLAYER
-    // =========================================
+    // Player
 
     int pos_x = 100;
-
     int pos_y = 150;
-
     float frame = 0.f;
-
     int current_frame_y = 132;
 
-    // =========================================
-    // HUD
-    // =========================================
+	// Pontuação, vida e tempo
 
     int areaHUD = 120;
-
     int pontuacao = 0;
-
     int vida = 3;
-
     float tempo_restante = 60;
-
     bool fimDeJogo = false;
 
-    // =========================================
-    // INVENCIBILIDADE
-    // =========================================
+	// Dano e invencibilidade
 
     bool tomou_dano = false;
-
     float tempo_dano = 0;
 
-    // =========================================
-    // ANIMAÇÃO MORCEGO
-    // =========================================
+	// Animação inimigo
 
     float frameInimigo = 0.f;
 
-    // =========================================
-    // TECLAS
-    // =========================================
+    // Teclas
 
     bool teclas[4] = {
         false,
@@ -238,9 +178,7 @@ int main() {
         false
     };
 
-    // =========================================
-    // INIMIGOS
-    // =========================================
+    // Inimigos
 
     int qtd_inimigos = 3;
 
@@ -258,12 +196,9 @@ int main() {
             (rand() % 5) + 3;
     }
 
-    // =========================================
-    // ITENS
-    // =========================================
+    // Itens
 
     int qtd_itens = 5;
-
     Item itens[5];
 
     for (int i = 0; i < qtd_itens; i++) {
@@ -275,17 +210,12 @@ int main() {
             rand() % 500 + areaHUD;
     }
 
-    // =========================================
-    // RANKING
-    // =========================================
+    // Ranking
 
     Ranking ranking[100];
-
     int qtdRanking = 0;
 
-    // =========================================
-    // LER RANKING DO ARQUIVO
-    // =========================================
+	// Ler ranking do arquivo
 
     FILE* leitura =
         fopen("ranking.dat", "rb");
@@ -306,9 +236,7 @@ int main() {
 
     bool sair = false;
 
-    // =========================================
-    // LOOP PRINCIPAL
-    // =========================================
+    // Loop Principal
 
     while (!sair) {
 
@@ -319,19 +247,14 @@ int main() {
             &event
         );
 
-        // =========================================
-        // FECHAR
-        // =========================================
+		// Fechar janela
 
         if (event.type ==
             ALLEGRO_EVENT_DISPLAY_CLOSE) {
-
             sair = true;
         }
 
-        // =========================================
-        // TECLAS
-        // =========================================
+		// Teclas pressionadas
 
         if (event.type ==
             ALLEGRO_EVENT_KEY_DOWN) {
@@ -341,19 +264,15 @@ int main() {
             case ALLEGRO_KEY_UP:
                 teclas[0] = true;
                 break;
-
             case ALLEGRO_KEY_DOWN:
                 teclas[1] = true;
                 break;
-
             case ALLEGRO_KEY_LEFT:
                 teclas[2] = true;
                 break;
-
             case ALLEGRO_KEY_RIGHT:
                 teclas[3] = true;
                 break;
-
             case ALLEGRO_KEY_ESCAPE:
                 sair = true;
                 break;
@@ -368,37 +287,28 @@ int main() {
             case ALLEGRO_KEY_UP:
                 teclas[0] = false;
                 break;
-
             case ALLEGRO_KEY_DOWN:
                 teclas[1] = false;
                 break;
-
             case ALLEGRO_KEY_LEFT:
                 teclas[2] = false;
                 break;
-
             case ALLEGRO_KEY_RIGHT:
                 teclas[3] = false;
                 break;
             }
         }
 
-        // =========================================
-        // TIMER
-        // =========================================
+		// Timer (Atualização do jogo)
 
         if (event.type ==
             ALLEGRO_EVENT_TIMER) {
 
-            // =========================================
-            // END GAME
-            // =========================================
+            // End game
 
             if (fimDeJogo) {
 
-                // =========================================
-                // PROCURA JOGADOR (BUSCA LINEAR)
-                // =========================================
+				// Procurar jogador no ranking (Busca Linear)
 
                 int indiceJogador = -1;
 
@@ -414,9 +324,7 @@ int main() {
                     }
                 }
 
-                // =========================================
-                // ADICIONA NOVO JOGADOR
-                // =========================================
+				// Adiciona jogador ao ranking
 
                 if (indiceJogador == -1) {
 
@@ -432,9 +340,7 @@ int main() {
                     qtdRanking++;
                 }
 
-                // =========================================
-                // ATUALIZA PONTOS
-                // =========================================
+				// Atualiza pontuação se jogador já existir
 
                 else {
 
@@ -446,18 +352,14 @@ int main() {
                     }
                 }
 
-                // =========================================
-                // ORDENA
-                // =========================================
+				// Ordena ranking
 
                 ordenarRanking(
                     ranking,
                     qtdRanking
                 );
 
-                // =========================================
-                // SALVA RANKING
-                // =========================================
+				// Salvar ranking no arquivo
 
                 FILE* salvar =
                     fopen("ranking.dat", "wb");
@@ -474,9 +376,7 @@ int main() {
                     fclose(salvar);
                 }
 
-                // =========================================
-                // TELA FINAL
-                // =========================================
+				// Tela de Fim de Jogo
 
                 al_clear_to_color(
                     al_map_rgb(0, 0, 0)
@@ -515,9 +415,7 @@ int main() {
                     pontosFinais
                 );
 
-                // =========================================
-                // RANKING
-                // =========================================
+                // Ranking
 
                 al_draw_text(
                     fontGrande,
@@ -568,9 +466,7 @@ int main() {
                 continue;
             }
 
-            // =========================================
-            // TEMPO
-            // =========================================
+			// Tempo restante
 
             tempo_restante -=
                 1.0 / 30.0;
@@ -580,9 +476,7 @@ int main() {
                 fimDeJogo = true;
             }
 
-            // =========================================
-            // MOVIMENTO PLAYER
-            // =========================================
+			// Movimento do player
 
             if (teclas[0]) {
 
@@ -612,9 +506,7 @@ int main() {
                 current_frame_y = 132;
             }
 
-            // =========================================
-            // ANIMAÇÃO PLAYER
-            // =========================================
+			// Animação do player
 
             frame += 0.3f;
 
@@ -623,9 +515,7 @@ int main() {
                 frame = 0;
             }
 
-            // =========================================
-            // ANIMAÇÃO MORCEGO
-            // =========================================
+			// Animação inimigos
 
             frameInimigo += 0.2f;
 
@@ -634,9 +524,7 @@ int main() {
                 frameInimigo = 0;
             }
 
-            // =========================================
-            // MOVIMENTO MORCEGOS
-            // =========================================
+			// Movimento dos inimigos
 
             for (int i = 0; i < qtd_inimigos; i++) {
 
@@ -652,9 +540,7 @@ int main() {
                 }
             }
 
-            // =========================================
-            // INVENCIBILIDADE
-            // =========================================
+			// Dano e invencibilidade
 
             if (tomou_dano) {
 
@@ -667,9 +553,7 @@ int main() {
                 }
             }
 
-            // =========================================
-            // COLISÃO MORCEGOS
-            // =========================================
+			// Colisão Inimigos
 
             for (int i = 0; i < qtd_inimigos; i++) {
 
@@ -700,9 +584,7 @@ int main() {
                 }
             }
 
-            // =========================================
-            // COLISÃO ITENS
-            // =========================================
+			// Colisão Itens
 
             for (int i = 0; i < qtd_itens; i++) {
 
@@ -730,9 +612,7 @@ int main() {
                 }
             }
 
-            // =========================================
-            // DESENHO
-            // =========================================
+            // Desenho
 
             al_clear_to_color(
                 al_map_rgb(255, 255, 255)
@@ -745,9 +625,7 @@ int main() {
                 0
             );
 
-            // =========================================
-            // HUD
-            // =========================================
+            // Hud
 
             char vidaTexto[50];
 
@@ -803,9 +681,7 @@ int main() {
                 tempoTexto
             );
 
-            // =========================================
-            // ITENS
-            // =========================================
+            // Itens
 
             for (int i = 0; i < qtd_itens; i++) {
 
@@ -838,9 +714,7 @@ int main() {
                 }
             }
 
-            // =========================================
-            // MORCEGOS
-            // =========================================
+            // Inimigos
 
             for (int i = 0; i < qtd_inimigos; i++) {
 
@@ -867,9 +741,7 @@ int main() {
                 );
             }
 
-            // =========================================
-            // PLAYER
-            // =========================================
+            // Player
 
             al_draw_bitmap_region(
 
@@ -892,22 +764,16 @@ int main() {
         }
     }
 
-    // =========================================
-    // LIMPEZA
-    // =========================================
+	// Limpeza de recursos
 
     al_destroy_bitmap(bg);
     al_destroy_bitmap(sprite);
     al_destroy_bitmap(inimigoSprite);
     al_destroy_bitmap(itemSprite);
-
     al_destroy_font(font);
     al_destroy_font(fontGrande);
-
     al_destroy_timer(timer);
-
     al_destroy_event_queue(event_queue);
-
     al_destroy_display(display);
 
     return 0;
