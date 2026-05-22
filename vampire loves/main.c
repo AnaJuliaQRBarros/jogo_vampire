@@ -397,7 +397,7 @@ int main() {
             if (fimDeJogo) {
 
                 // =========================================
-                // PROCURA JOGADOR
+                // PROCURA JOGADOR (BUSCA LINEAR)
                 // =========================================
 
                 int indiceJogador = -1;
